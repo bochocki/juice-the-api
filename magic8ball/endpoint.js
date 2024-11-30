@@ -15,7 +15,7 @@ const responses = fs
 // Define the /magic8ball route
 router.post("/", async (req, res) => {
     try {
-        const userName = req.body.user_name; // Slack includes the user's handle here
+        const userName = req.body.user_name?.substring(1); // Slack includes the user's handle here; remove the @.
         const question = req.body.text?.trim();
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
