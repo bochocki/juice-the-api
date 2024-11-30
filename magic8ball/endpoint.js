@@ -15,19 +15,16 @@ const responses = fs
 // Define the /magic8ball route
 router.post("/", async (req, res) => {
     try {
+        // 1. Send an immediate response to Slack (200 OK) to suppress the dispatch_failed error
+        res.status(200).send(); // No content, just send an immediate success response
+        
+        // 2. Post the actual response back to Slack via the response_url
         const question = req.body.text?.trim() || "What do you want to know?";
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
-        // 1. Immediately respond to Slack to suppress the "dispatch_failed" error
-        res.status(200).json({
-            response_type: "ephemeral", // This is optional; user will see "working on it"
-            text: `🎱 Thinking about your question: *${question}*...`,
-        });
-
-        // 2. Post the actual response back to Slack via the response_url
         const responseUrl = req.body.response_url;
         await axios.post(responseUrl, {
-            response_type: "in_channel", // Message visible to everyone in the channel
+            response_type: "in_channel", // Makes the message visible to everyone in the channel
             text: `🎱 *${question}*\n> ${randomResponse}`,
         });
     } catch (error) {
