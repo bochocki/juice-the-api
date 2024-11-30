@@ -3,7 +3,7 @@ const app = express();
 
 // Import and register endpoints
 const magic8ball = require("./magic8ball/endpoint");
-const hello = require("./hello/endpoint");
+const hello = require("./hello_world/endpoint");
 
 app.use("/magic8ball", magic8ball);
 app.use("/hello", hello);
