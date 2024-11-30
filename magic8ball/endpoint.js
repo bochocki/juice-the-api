@@ -15,14 +15,14 @@ const responses = fs
 // Define the /magic8ball route
 router.post("/", async (req, res) => {
     try {
-        const userName = req.body.user_name?.substring(1); // Slack includes the user's handle here; remove the @.
+        const userName = req.body.user_name; // Slack includes the user's handle here
         const question = req.body.text?.trim();
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
         // Determine the message for empty questions
         const formattedQuestion = question
-            ? `<@${userName}> asked: _${question}_`
-            : `<@${userName}> asked a private question :face_with_finger_covering_closed_lips:`;
+            ? `<${userName}> asked: _${question}_`
+            : `<${userName}> asked a private question :face_with_finger_covering_closed_lips:`;
 
         // Respond to Slack immediately to prevent dispatch_failed errors
         res.status(200).send();
