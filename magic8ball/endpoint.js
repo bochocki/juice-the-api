@@ -16,7 +16,7 @@ const responses = fs
 router.post("/", async (req, res) => {
     try {
         // Safely access req.body.text
-        const question = req.body.text?.trim() || "What do you want to know?";
+        const question = req.body.text?.trim() || "<user asked the question in their heart>";
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
         // Immediately respond to Slack
@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
         const responseUrl = req.body.response_url;
         await axios.post(responseUrl, {
             response_type: "in_channel", // Message visible to everyone
-            text: `🎱 *${question}*\n> ${randomResponse}`,
+            text: `> _${question}_\n**${randomResponse}**`,
         });
     } catch (error) {
         console.error("Error handling /magic8ball:", error);
