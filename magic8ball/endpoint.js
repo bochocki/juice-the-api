@@ -14,24 +14,24 @@ const responses = fs
 
 // Define the /magic8ball route
 router.post("/", async (req, res) => {
-    // Immediately respond to Slack to prevent dispatch_failed error
-    res.status(200).send(); // Send 200 response immediately
-
     try {
+        // Safely access req.body.text
         const question = req.body.text?.trim() || "What do you want to know?";
         const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
-        // Send the follow-up response via Slack's response_url
+        // Immediately respond to Slack
+        res.status(200).send();
+
+        // Send the follow-up response via response_url
         const responseUrl = req.body.response_url;
         await axios.post(responseUrl, {
-            response_type: "in_channel", // Makes the message visible to everyone
+            response_type: "in_channel", // Message visible to everyone
             text: `🎱 *${question}*\n> ${randomResponse}`,
         });
     } catch (error) {
         console.error("Error handling /magic8ball:", error);
 
-        // Log the error, but do not attempt to send another response
-        // The immediate 200 response has already been sent
+        // Ensure we don't try to send multiple responses
     }
 });
 
