@@ -21,8 +21,8 @@ router.post("/", async (req, res) => {
 
         // Determine the message for empty questions
         const formattedQuestion = question
-            ? `<${userName}> asked: _${question}_`
-            : `<${userName}> asked a private question :face_with_finger_covering_closed_lips:`;
+            ? `${userName}: _${question}_`
+            : `${userName} asked a private question :face_with_finger_covering_closed_lips:`;
 
         // Respond to Slack immediately to prevent dispatch_failed errors
         res.status(200).send();
