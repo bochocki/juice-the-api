@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios"); // For sending follow-up responses
 const router = express.Router();
 const fs = require("fs");
 const path = require("path");
@@ -12,14 +13,18 @@ const responses = fs
     .filter(Boolean);
 
 // Define the /magic8ball route
-router.post("/", (req, res) => {
-    // Select a random response
+router.post("/", async (req, res) => {
+    const question = req.body.text?.trim() || "What do you want to know?";
     const randomResponse = responses[Math.floor(Math.random() * responses.length)];
 
-    // Return a response in Slack's expected JSON format
-    res.json({
-        response_type: "in_channel", // Makes the response visible to everyone in the channel
-        text: "`${randomResponse}`",
+    // Suppress the original command by returning no content
+    res.status(200).send();
+
+    // Post the response back to Slack
+    const responseUrl = req.body.response_url; // Provided by Slack in the request body
+    await axios.post(responseUrl, {
+        response_type: "in_channel", // Visible to everyone in the channel
+        text: `🎱 *${question}*\n> ${randomResponse}`,
     });
 });
 
