@@ -21,14 +21,14 @@ router.post("/", async (req, res) => {
 
         // Determine the message for empty questions
         const formattedQuestion = question
-            ? `_${question}_`
+            ? `<@${userName}> asked: _${question}_`
             : `<@${userName}> asked a private question :face_with_finger_covering_closed_lips:`;
 
         // Respond to Slack immediately to prevent dispatch_failed errors
         res.status(200).send();
 
         // Format the response with Slack markdown
-        const formattedResponse = `> ${formattedQuestion}\n**${randomResponse}**`;
+        const formattedResponse = `> ${formattedQuestion}\n*${randomResponse}*`;
 
         // Send the follow-up response via response_url
         const responseUrl = req.body.response_url;
