@@ -19,7 +19,7 @@ router.post("/", (req, res) => {
     // Return a response in Slack's expected JSON format
     res.json({
         response_type: "in_channel", // Makes the response visible to everyone in the channel
-        text: `🎱 ${randomResponse}`,
+        text: "`${randomResponse}`",
     });
 });
 
