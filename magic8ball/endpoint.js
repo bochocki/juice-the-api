@@ -14,7 +14,7 @@ const responses = fs
 // Define the `/magic8ball` route
 router.get("/", (req, res) => {
     const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-    res.status(200).json({ message: `🎱: ${randomResponse}` });
+    res.status(200).json({ message: "> 🎱: ${randomResponse}" });
 });
 
 module.exports = router;
