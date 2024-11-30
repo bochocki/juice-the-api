@@ -5,6 +5,10 @@ const app = express();
 const magic8ball = require("./magic8ball/endpoint.js");
 const hello = require("./hello_world/endpoint.js");
 
+// Use built-in Express middleware for parsing request bodies
+app.use(express.urlencoded({ extended: true })); // Parses `application/x-www-form-urlencoded`
+app.use(express.json()); // Parses JSON if needed for future requests
+
 app.use("/magic8ball", magic8ball);
 app.use("/hello", hello);
 
